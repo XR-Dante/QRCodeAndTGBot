@@ -50,29 +50,28 @@ class Bot{
 	}
 
 	public function qrCodeGenerator(){
-		$text = $this->text;
-		$qrCodeGenerator = new QrCodeGenerator($text);
-		$imageData = $qrCodeGenerator->Tggenerator();
+	    $text = $this->text;
+	    $qrCodeGenerator = new QrCodeGenerator($text);
+	    $imageData = $qrCodeGenerator->Tggenerator();
 	
-		$tempFile = tmpfile();
-		$tempFilePath = stream_get_meta_data($tempFile)['uri'];
-		file_put_contents($tempFilePath, $imageData);
+	    $tempFile = tmpfile();
+	    $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+	    file_put_contents($tempFilePath, $imageData);
 	
-		$this->http->post('sendPhoto', [
-			'multipart' => [
-				[
-					'name'     => 'chat_id',
-					'contents' => $this->chatId
-				],
-				[
-					'name'     => 'photo',
-					'contents' => fopen($tempFilePath, 'r'),
-					'filename' => 'qrcode.png'
-				]
-			]
+	    $this->http->post('sendPhoto', [
+		'multipart' => [
+		    [
+			'name'     => 'chat_id',
+			'contents' => $this->chatId
+		    ],
+		    [
+			'name'     => 'photo',
+			'contents' => fopen($tempFilePath, 'r'),
+		    ]
+		    ]
 		]);
 	
-		fclose($tempFile);
+	    fclose($tempFile);
 	}
 	
 }

@@ -1,6 +1,5 @@
 <?php
 // ini_set('display_errors',1);
-namespace App\Web\Web;
 
 require "vendor/autoload.php";
 require_once __DIR__ . '/QrCodeGenerator.php';

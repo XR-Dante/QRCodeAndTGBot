@@ -12,7 +12,6 @@ class QrCodeGenerator {
     function __construct($text){
         $options = new QROptions([
             'outputType' => QRCode::OUTPUT_IMAGE_PNG,
-            'eccLevel' => QRCode::ECC_L,
         ]);
 
         $this->text = $text;
@@ -27,11 +26,9 @@ class QrCodeGenerator {
     function Tggenerator(){
         $options = new QROptions([
             'outputType' => QRCode::OUTPUT_IMAGE_PNG,
-            'eccLevel' => QRCode::ECC_L,
         ]);
     
-        $qrCode = new QRCode($options);
-        return $qrCode->render($this->text); // PNG formatda rasm qaytaradi
+        return (new QRCode($options))->render($this->text);
     }
     
 

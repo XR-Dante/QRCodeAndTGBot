@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
+namespace App;
+
 require_once 'vendor/autoload.php';
-require_once 'controllers/Bot.php';
-require_once 'controllers/Web.php';
+//use App\Web\Web;
+use App\Bot\Bot;
 
 class Route{
   public static function handleBot(): void{
@@ -17,5 +19,4 @@ class Route{
   public static function handleWeb(): void{
       require_once 'controllers/Web.php';
   }
-
 }
