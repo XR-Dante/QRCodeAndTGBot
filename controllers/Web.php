@@ -1,5 +1,7 @@
 <?php
-ini_set('display_errors',1);
+// ini_set('display_errors',1);
+namespace App\Web\Web;
+
 require "vendor/autoload.php";
 require_once __DIR__ . '/QrCodeGenerator.php';
 require_once 'ReadQrCode.php';
@@ -7,8 +9,8 @@ require_once 'ReadQrCode.php';
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 use App\QrCodeGenerator\QrCodeGenerator;
-
 use App\ReadQrCode\ReadQrCode;
+
 
 $natija = "";
 $file = null;

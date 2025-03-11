@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once 'vendor/autoload.php';
-require_once 'QrCodeGenerator.php';
+// require_once 'QrCodeGenerator.php';
 
 use GuzzleHttp\Client;
 use App\QrCodeGenerator\QrCodeGenerator;
