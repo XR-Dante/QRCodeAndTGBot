@@ -1,0 +1,4 @@
+.VS code
+vendor/
+composer.lock
+.env
