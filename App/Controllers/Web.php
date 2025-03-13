@@ -1,6 +1,6 @@
 <?php
 // ini_set('display_errors',1);
-namespace App\Controllers;
+namespace App;
 
 require "vendor/autoload.php";
 
@@ -8,6 +8,7 @@ use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 use App\Controllers\QrCodeGenerator;
 use App\ReadQrCode;
+use App\Contracts\ReadInterface;
 
 $natija = "";
 $file = null;

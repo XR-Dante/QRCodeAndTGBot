@@ -5,9 +5,9 @@ namespace App\Controllers;
 use GuzzleHttp\Client;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use App\Contracts\QrGeneratorInterface;
+use App\Contracts\GeneratorInterface;
 
-class QrCodeGenerator implements QrGeneratorInterface {
+class QrCodeGenerator implements GeneratorInterface {
     public $text;
     public $resault;
 
