@@ -1,11 +1,13 @@
 <?php
 
-namespace App\QrCodeGenerator;
+namespace App\Controllers;
 
+use GuzzleHttp\Client;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
+use App\Contracts\QrGeneratorInterface;
 
-class QrCodeGenerator {
+class QrCodeGenerator implements QrGeneratorInterface {
     public $text;
     public $resault;
 
@@ -27,8 +29,8 @@ class QrCodeGenerator {
         $options = new QROptions([
             'outputType' => QRCode::OUTPUT_IMAGE_PNG,
         ]);
-    
-        return (new QRCode($options))->render($this->text);
+	$qrPath = __DIR__ . '/qr.png';    
+        return (new QRCode($options))->render($this->text, $qrPath);
     }
     
 

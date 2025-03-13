@@ -2,12 +2,11 @@
 declare(strict_types=1);
 
 namespace App;
+use App\Controllers\Bot;
+use App\Contracts\RouteInterface;
 
-require_once 'vendor/autoload.php';
-//use App\Web\Web;
-use App\Bot\Bot;
-
-class Route{
+class Route implements RouteInterface {
+	public static $test = 'test';
   public static function handleBot(): void{
       $update=file_get_contents('php://input');
 
@@ -17,6 +16,6 @@ class Route{
       }
   }
   public static function handleWeb(): void{
-      require_once 'controllers/Web.php';
+      require_once 'Controllers/Web.php';
   }
 }

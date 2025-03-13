@@ -3,5 +3,12 @@
         "vlucas/phpdotenv": "^5.6",
         "chillerlan/php-qrcode": "^5.0",
         "guzzlehttp/guzzle": "^7.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Qr\\": "./src/",
+            "controllers\\": "controllers/",
+	    "App\\":"App/"
+        }
     }
 }

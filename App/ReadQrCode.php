@@ -1,13 +1,13 @@
 <?php 
-
-namespace App\ReadQrCode; 
+namespace App;
 
 require_once 'vendor/autoload.php';
 
 use chillerlan\QRCode\QRCode;
+use App\Contracts\ReadQrCodeInterface;
 use Throwable;
 
-class ReadQrCode {
+class ReadQrCode implements ReadQrCodeInterface {
 
     public function ReadQr(string $file): string {
         if (!file_exists($file)) {    

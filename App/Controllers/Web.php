@@ -1,15 +1,13 @@
 <?php
 // ini_set('display_errors',1);
+namespace App\Controllers;
 
 require "vendor/autoload.php";
-require_once __DIR__ . '/QrCodeGenerator.php';
-require_once 'ReadQrCode.php';
 
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use App\QrCodeGenerator\QrCodeGenerator;
-use App\ReadQrCode\ReadQrCode;
-
+use App\Controllers\QrCodeGenerator;
+use App\ReadQrCode;
 
 $natija = "";
 $file = null;
@@ -29,10 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])){
     }
 }
 
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html>

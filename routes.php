@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once 'Route.php';
+//$qr = new \Qr\src\Route();
 
-
-Route::handleBot();
-Route::handleWeb();
+\App\Route::handleBot();
+\App\Route::handleWeb();
 
