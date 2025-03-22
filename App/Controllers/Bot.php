@@ -5,17 +5,18 @@ namespace App\Controllers;
 use GuzzleHttp\Client;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use App\Controllers\QrCodeGenerator;
-use App\ReadQrCode;
+use App\Controllers\QrCodeInterface;
 
-class Bot {
-  public  ?string $text;
+class Bot implements QrCodeInterface {
+  public  ?string $text = null;
   public  int    $chatId;
   public  string $firstName;
+  public  string $command;
 
   private string $api;
   private        $http;
   private        $img;
+  //private        $other;
 
   public function __construct(string $token){
 	  $this->token = $_ENV['BOT_TOKEN'];
@@ -24,7 +25,8 @@ class Bot {
   }
 
   public function handle(string $update){
-    $update = json_decode($update);
+    $update = json_decode($update); 
+
 
 
     if(isset($update->message->text)){
@@ -36,30 +38,28 @@ class Bot {
     if(isset($update->message->photo)){
       $this->img = end($update->message->photo)->file_id;
     }
+
+    #if(!isset($this->text) && !isset($this->img)){
+    #  $this->otherMsg();
+    #}
+
     if(isset($this->text)){
       if(strpos($this->text, '/') === 0) {
-        $string     = explode(' ', $this->text, 2);
-        $this->text = $string[1] ?? $string[0];
-        $command    = $string[0];
+        $string        = explode(' ', $this->text, 2);
+        $this->text    = $string[1] ?? $string[0];
+        $this->command = $string[0];
       }
     }else{
       if(!empty($this->img)){
-        $this->sendPhoto();
+        $this->readQrCode();
       }
     }
 
     if($this->text === "/start"){
       $this->handleStartCommand();
-    }elseif($this->text === "/generate"){
-      $this->handleGenerateCommand();
+    }elseif($this->command === "/generate" && isset($this->text)){
+      $this->generatorQrCode();
     }
-    /*
-    match($command){
-      '/start' => $this->handleStartCommand(),
-      '/generate'  => $this->handleGenerateCommand(),
-      
-    };
- */
   }
 
   public function handleStartCommand(){
@@ -75,10 +75,11 @@ class Bot {
       ]);
   }
 
-  public function handleGenerateCommand(){
-
-    $result = new QrCodeGenerator($this->text);
-    $qr = $result->Tggenerator();
+  public function generatorQrCode(){
+    $options = new QROptions([
+        'outputType' => QRCode::OUTPUT_IMAGE_PNG,
+    ]); 
+    (new QRCode($options))->render($this->text, 'qr.png');
 
     $qrPath = __DIR__ . '/qr.png';
     $this->http->post('sendPhoto', [
@@ -96,7 +97,7 @@ class Bot {
 
   }
 
-  public function sendPhoto(){
+  public function readQrCode(){
     if(!$this->img){
       return;
     }
@@ -108,22 +109,32 @@ class Bot {
     $image    = file_get_contents($fileUrl);
     file_put_contents('qr.png', $image);
     try{
-      $result = (new ReadQrCode())->ReadQr("qr.png");
+      $result = (new QRCode)->readFromFile("qr.png");
     
     }catch(Exception $e){
       $result = "Qr kodni uqib bulmadi: " . $e->sendMessage();
-    } 
+    }
     
     $this->http->post('sendMessage', [
         'form_params' => [
             'chat_id' => $this->chatId,
-            'text'    => $result
+            'text'    => (string)$result
         ]
-      ]);
+    ]);
 
 
   }
 
+  public function otherMsg(){
+     $this->http->post('sendMessage', [
+        'form_params' => [
+          'chat_id'   => $this->chatId,
+          'text'      => "❌No'malum xabar!"
+        ]
+     ]);
+  }
+
+  
   public function setWebhook(string $url): string {
     try{
       $response = $this->http->post('setWebhook', [
@@ -140,4 +151,5 @@ class Bot {
       return $e->getMessage();
     }
   }
+   
 }

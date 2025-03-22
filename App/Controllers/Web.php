@@ -1,69 +1,36 @@
 <?php
 // ini_set('display_errors',1);
-namespace App;
+namespace App\Controllers;
 
 require "vendor/autoload.php";
 
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use App\Controllers\QrCodeGenerator;
-use App\ReadQrCode;
-use App\Contracts\ReadInterface;
+use Throwbale;
+use App\Controllers\QrCodeInterface;
 
-$natija = "";
-$file = null;
+class Web implements QrCodeInterface{
+  public function generatorQrCode(string $text){
+      $options = new QROptions([
+        'outputType'=>QRCode::OUTPUT_IMAGE_PNG,
+      ]);
+      $qrCode = (new QRCode($options))->render($text);
+      
+      return '<img src="' . $qrCode . '" alt = "QR Code" witdh="200">';
+  }
 
-if(isset($_POST['text'])){
-    $text = $_POST["text"]; 
-    $resault = new QrCodeGenerator($text);  
-    $natija = $resault->generator();
-}
-
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])){
-    if($_FILES['file']['error'] === UPLOAD_ERR_OK){
-        $filePath = $_FILES['file']['tmp_name']; 
-        $file = (new ReadQrCode())->ReadQr($filePath);
-    } else {
-        echo "Fayl yuklashda xatolik yuz berdi!";
+  public function readqrCode($file){
+    if(!file_exists($file)){
+      return "Xatolik! fayil topilmadi.";
     }
-}
+    try{
+      $result = (new QRCode)->readFromFile($file);
+      return (string)$result;
+    }catch(Throwable $e){
+      return "Xatolik!".$e->getMessage();
+    }
+  }
 
+}
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-   <meta charset="UTF-8">
-   <title>QR Code Generator</title>
-   <style>
-      .button {
-  	   background-color: DodgerBlue;
- 	   border: none;
-  	   color: white;
-  	   padding: 3px 14px;
-  	   font-size: 16px;
-  	   cursor: pointer;
-      }
-   </style>
-</head>
-<body>
-   <form action="index.php" method="POST">
-        <input type="text" name="text" class="input">
-	<button type="submit" >Generation</button><br><br>
-   </form>
-
-   <form action="index.php" method="POST" enctype="multipart/form-data">
-	<input type="file" name="file">
-	<button type="submit" class="button">Save</button>
-   </form>
-      <h3>QR Kod</h3>
-      <?= $natija; ?>
-      <?php 
-          if(!empty($file)){
-              echo $file;
-	  }else{
-	      echo "";
-	  }
-      ?>
-</body>
-</html>

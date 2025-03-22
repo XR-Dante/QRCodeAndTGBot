@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
+namespace App\Controllers;
 
-namespace App;
 use App\Controllers\Bot;
-use App\Contracts\RouteInterface;
 
-class Route implements RouteInterface {
+class Route  {
 	public static $test = 'test';
   public static function handleBot(): void{
       $update=file_get_contents('php://input');
 
       $token=$_ENV['BOT_TOKEN'];
+      file_put_contents('log.php', $update);
       if($update){
         (new Bot($token))->handle($update);
       }
   }
   public static function handleWeb(): void{
-      require_once 'Controllers/Web.php';
+      require_once __DIR__ . "/../Views/Web.php";
   }
 }

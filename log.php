@@ -1,0 +1,2 @@
+{"update_id":156022420,
+"message":{"message_id":631,"from":{"id":8139628144,"is_bot":false,"first_name":"XR","last_name":"Dante","language_code":"en"},"chat":{"id":8139628144,"first_name":"XR","last_name":"Dante","type":"private"},"date":1742229193,"text":"/generate aekjg","entities":[{"offset":0,"length":9,"type":"bot_command"}]}}
